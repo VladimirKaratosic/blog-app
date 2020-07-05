@@ -1,0 +1,34 @@
+@import "../styles/colors.scss";
+
+.SectionTop {    
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 768px) {
+        margin-left: 255px;
+    }
+    .top_box {
+        height: 67px;
+        background-color: $gray-bg;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    p {
+        padding-left: 39px;
+        margin: 0;
+    }
+    span {
+        position: absolute;
+        top: 7px;
+        right: 14px;
+    }
+    button {
+        width: 167px;
+        line-height: 1;
+        line-height: 26px;
+        box-sizing: border-box;
+        background-color: $black-color;
+        color: $white-color;
+        margin: 17px 7px 15px auto;
+    }
+}
