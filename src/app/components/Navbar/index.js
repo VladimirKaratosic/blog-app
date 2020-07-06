@@ -1,7 +1,8 @@
 import React from 'react'
 import "./Navbar.scss";
 
-function Navbar() {
+function Navbar({ searchInput, searchInputHandler }) {
+
     return (
         <div className="Navbar">
             <nav className="navbar navbar-inverse navbar-fixed-top">
@@ -9,7 +10,7 @@ function Navbar() {
                     <div className="navbar-header">                                
                         <a className="navbar-brand" href="#!">My Blog</a>
                         <form className="navbar-form navbar-right">                
-                            <input type="text" placeholder="Search" className="form-control" />                                              
+                            <input onChange={(e) => searchInputHandler(e.currentTarget.value)} value={searchInput} type="text" placeholder="Search" className="form-control" />                                              
                         </form>
                         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                             <span className="sr-only">Toggle navigation</span>

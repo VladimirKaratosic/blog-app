@@ -1,18 +1,27 @@
 import React from 'react'
 import './Sidebar.scss';
+import { connect } from 'react-redux';
+import { getBlogPostListByCategory } from '../../redux/actions/BlogPostActions';
 
+function Sidebar(props) {
+    const { getBlogPostListByCategory } = props;
 
-function Sidebar() {
     return (
         <div className="Sidebar">
             <h3>Blog categories</h3>
             <div className="category_box">
-                <p>Category 1</p>
-                <p>Category 2</p>
-                <p>Category 3</p>
+                <p onClick={() => getBlogPostListByCategory(1)} >Category 1</p>
+                <p onClick={() => getBlogPostListByCategory(2)} >Category 2</p>
+                <p onClick={() => getBlogPostListByCategory(3)} >Category 3</p>
             </div>                                    
         </div>
     )
 }
 
-export default Sidebar
+const MapDispatchToProps = (dispatch) => {
+    return {
+        getBlogPostListByCategory: (payload) => {dispatch(getBlogPostListByCategory(payload))},
+    }
+}
+
+export default connect(null, MapDispatchToProps)(Sidebar)

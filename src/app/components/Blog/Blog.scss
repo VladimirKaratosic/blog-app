@@ -35,6 +35,7 @@
 .post_box {    
     @media (min-width: 768px) {
         margin-left: 23px;
+        flex-grow: 1;
     }
 }
 

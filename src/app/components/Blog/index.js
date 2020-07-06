@@ -1,51 +1,83 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import "./Blog.scss";
 import Navbar from '../Navbar';
 import Sidebar from '../Sidebar';
 import SectionTop from '../SectionTop';
 import { connect } from 'react-redux';
-import { addBlogPost } from '../../redux/actions/BlogPostActions';
+import { getBlogPostList, deleteBlogPost } from '../../redux/actions/BlogPostActions';
 import BlogPost from './BlogPost';
 import Popup from '../sharedComponents/Popup';
 
 
 function Blog(props) {
     const [visible, setVisible] = useState(false);
-    const { blogPosts, addBlogPost } = props;    
+    const [ID, setID] = useState("");
+    const [labels, setLabels] = useState({
+        title: "",
+        text: ""
+    });
+    const [searchInput, setSearchInput] = useState("");
+    const [searchResult, setSearchResult] = useState([]);
+
+    const { blogPosts, getBlogPostList, deleteBlogPost } = props;        
+        
+    useEffect(() => {
+        getBlogPostList();                
+    }, [])       
+
+    const deleteData = (id) => {
+        deleteBlogPost(id);                 
+    }        
     
-    const handleClick = () => {        
-        addBlogPost({
-            "id": 5,
-            "title":	"Hello it's me",
-            "text": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis iusto assumenda fuga dolorum quis. Sint maiores ratione ipsam sunt dolor similique. Aliquid libero eum omnis ex numquam voluptates inventore pariatur quod, adipisci minus magni harum facilis optio sed nam, sint blanditiis aspernatur maxime facere explicabo deleniti eligendi, a saepe cum. Alias assumenda nesciunt consequuntur veritatis ea vel id dolorem voluptas. ",
-            "categoryId": 5
-        })
-    }
-    
-    const openDialog = () => {
-        setVisible(true);
+    const openDialog = (id) => {
+        setID(id);
+        setVisible(true);        
     }
     
     const closeDialog = () => {
+        setLabels({
+            title: "",
+            text: ""
+        })
+        setID("");
         setVisible(false);
-    }    
+    } 
+    
+    const searchInputHandler = (input) => {
+        setSearchInput(input);
+    }
+
+    useEffect(() => {
+        const res =  blogPosts.filter(post => post.title.includes(searchInput));                
+        setSearchResult(res);        
+    }, [searchInput])
     
     return (
         <div className="Blog">
-            <Navbar />
+            <Navbar searchInput={searchInput} searchInputHandler={searchInputHandler} />
             <main>
                 <div className="container-fluid">
-                    <SectionTop click={openDialog}/>
+                    <SectionTop click={() => openDialog()}/>
                     <div className="main_content">
                         <Sidebar />
                         <div className="post_box">
-                            <BlogPost openDialog={openDialog} closeDialog={closeDialog} />
-                            <BlogPost openDialog={openDialog} closeDialog={closeDialog} />
-                            <BlogPost openDialog={openDialog} closeDialog={closeDialog} />
-                            <BlogPost openDialog={openDialog} closeDialog={closeDialog} />
+                            {(searchResult.length ? searchResult : blogPosts).map(post => {
+                                return (
+                                    <BlogPost 
+                                        key={post.id} 
+                                        label={post.title} 
+                                        deletePost={() => deleteData(post.id)} 
+                                        createdAt={post.createdAt} 
+                                        text={post.text} 
+                                        id={post.id} 
+                                        openDialog={openDialog} 
+                                        closeDialog={closeDialog}                                         
+                                    />
+                                ) 
+                            })}                            
                         </div>                                                                      
                     </div>
-                    <Popup visible={visible} closeDialog={closeDialog}/>                                         
+                    <Popup ID={ID} labels={labels} setLabels={setLabels} visible={visible} closeDialog={closeDialog}/>                                         
                 </div>
             </main>                        
         </div>
@@ -54,13 +86,14 @@ function Blog(props) {
 
 const MapStateToProps = (state) => {
     return {
-        blogPosts:state.blogPosts
+        blogPosts: state.blogPosts.resultData
     }
 }
 
 const MapDispatchToProps = (dispatch) => {
-    return {
-        addBlogPost: (payload) => {dispatch(addBlogPost(payload))},
+    return {        
+        getBlogPostList: (payload) => {dispatch(getBlogPostList(payload))},
+        deleteBlogPost: (id) => {dispatch(deleteBlogPost(id))}
     }
 }
 
