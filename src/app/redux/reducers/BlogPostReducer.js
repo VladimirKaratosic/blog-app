@@ -11,7 +11,7 @@ const BlogPostReducer = (state = initialState, action) => {
       return {
         ...state,
         resultData: [
-          ...action.payload
+          action.payload
         ]
         
       };
