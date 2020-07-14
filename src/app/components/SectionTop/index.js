@@ -7,8 +7,7 @@ function SectionTop({click}) {
         <section className="SectionTop">
             <h2>Welcome to My Blog</h2>
             <div className="top_box">
-                <p>Container for showing application messages</p>
-                <span>X</span>
+                <p>Container for showing application messages</p>                
             </div>
             <Button click={click} label="Add post"/>            
         </section>

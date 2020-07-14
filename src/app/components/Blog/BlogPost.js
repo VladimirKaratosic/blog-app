@@ -22,18 +22,19 @@ function BlogPost(props) {
         <section className="BlogPost">
             <div className="top">
                 <Image80 />
-                <div className="top_midle">
+                <div className="top_top">
                     <h2>{label}</h2>
                     <h6>Posted date: {date} at {time} by Some person {id - 1 ? id - 1 : null}</h6>
+                </div>
+                <div class="break"></div>
+                <div className="top_midle">
+                    {text}
                 </div>
                 <div className="top_right">                   
                     <Button click={() => openDialog(id)} label="Edit" />
                     <Button click={deletePost} label="Delete" />
                 </div>
-            </div>
-            <div className="midle">
-                {text}
-            </div>
+            </div>            
             <div className="bottom">
                 <Image100 />
                 <Image100 />
